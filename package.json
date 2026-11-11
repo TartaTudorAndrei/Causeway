@@ -1,0 +1,32 @@
+{
+  "name": "causeway-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Causeway — Open-source operations platform for non-profits & charities",
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:backend": "node scripts/run-gradle.js bootRun",
+    "dev:whatsapp": "npm run dev --workspace=whatsapp-service",
+    "dev": "node scripts/start-db.js && concurrently --kill-others \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:whatsapp\"",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:whatsapp": "npm run build --workspace=whatsapp-service",
+    "build:backend": "node scripts/run-gradle.js build -x test",
+    "build": "npm run build:frontend && npm run build:whatsapp && npm run build:backend",
+    "seed:db": "node scripts/run-gradle.js seedDatabase",
+    "test": "npm run test --workspace=frontend",
+    "test:frontend": "npm run test --workspace=frontend",
+    "test:backend": "node scripts/run-gradle.js test",
+    "lint": "npm run lint --workspace=frontend",
+    "lint:frontend": "npm run lint --workspace=frontend",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "frontend",
+    "whatsapp-service"
+  ]
+}

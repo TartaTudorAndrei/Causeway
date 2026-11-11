@@ -1,0 +1,83 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.7'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.charityapp'
+version = '0.0.1-SNAPSHOT'
+description = 'causeway'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'com.stripe:stripe-java:24.4.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.api-client:google-api-client:1.34.1'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.34.1'
+    implementation 'com.google.apis:google-api-services-gmail:v1-rev110-1.25.0'
+    implementation 'com.google.apis:google-api-services-sheets:v4-rev20220927-2.0.0'
+    implementation 'com.google.apis:google-api-services-docs:v1-rev20210707-1.32.1'
+    implementation 'com.google.apis:google-api-services-drive:v3-rev20211107-1.32.1'
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.flywaydb:flyway-core:10.20.0'
+    runtimeOnly 'org.flywaydb:flyway-database-postgresql:10.20.0'
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+    implementation 'nl.martijndwars:web-push:5.1.1'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    runtimeOnly 'com.h2database:h2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+bootRun {
+	standardInput = System.in
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+	options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+}
+
+tasks.register('runEmailAuth', JavaExec) {
+	group = 'application'
+	description = 'Runs the Google OAuth 2.0 CLI helper to generate a refresh token'
+	classpath = sourceSets.main.runtimeClasspath
+	mainClass = 'com.charityapp.cli.EmailAuth'
+	standardInput = System.in
+	if (project.hasProperty('args')) {
+		args project.args.split('\\s+')
+	}
+}
+
+tasks.register('seedDatabase', JavaExec) {
+	group = 'database'
+	description = 'Executes dev_full_database_seed.sql against the database'
+	classpath = sourceSets.main.runtimeClasspath
+	mainClass = 'com.charityapp.cli.DatabaseSeedRunner'
+	standardInput = System.in
+}
+

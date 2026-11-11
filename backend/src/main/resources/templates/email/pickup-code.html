@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Mulțumim pentru donație! | ' + ${orgName}">Mulțumim pentru donație! | Causeway</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f8e8ef;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px 0;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(212, 19, 103, 0.15);
+        }
+
+        /* Header */
+        .header {
+            background: #d41367;
+            padding: 20px;
+            text-align: center;
+        }
+        .header img {
+            width: 95%;
+            max-width: 550px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .thank-you {
+            color: white;
+            margin-top: 15px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px 20px 40px;
+        }
+
+        .donation-info p {
+            margin-bottom: 15px;
+        }
+
+        .donation-amount {
+            font-weight: bold;
+            color: #d41367;
+        }
+
+        .code-label {
+            font-size: 16px;
+            margin: 20px 0 10px;
+            color: #555;
+            text-align: center;
+        }
+
+        .code-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .code {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: white;
+            background-color: #d41367;
+            padding: 12px 25px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .instructions h3 {
+            color: #d41367;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .hours {
+            background-color: #fdf2f7;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid #d41367;
+        }
+
+        /* Social links */
+        .socials {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .socials a {
+            margin: 0 10px;
+            display: inline-block;
+            text-decoration: none;
+            color: #d41367;
+            font-weight: bold;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        .socials img {
+            width: 32px;
+            height: 32px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 480px) {
+            .content { padding: 20px 15px 30px; }
+            .code { font-size: 20px; padding: 10px 15px; }
+            .socials a { display: block; margin: 8px 0; }
+            .header img { width: 100%; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <!-- Header with logo and thank-you -->
+    <div class="header">
+        <img th:if="${logoUrl != null and !logoUrl.isEmpty()}" th:src="${logoUrl}" alt="Logo">
+        <div class="thank-you" th:text="'Echipa „' + ${orgName} + '” vă mulțumește!'">
+            Echipa vă mulțumește!
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="donation-info">
+            <p><strong>Dragă Donator,</strong></p>
+            <p>
+                Vă mulțumim pentru donația dvs. în valoare de
+                <span class="donation-amount" th:text="${amount + ' RON'}">30 RON</span>
+                și pentru sprijinul acordat cauzelor comunitare.
+            </p>
+        </div>
+
+        <p class="code-label">Codul dvs. pentru pickup este:</p>
+
+        <div class="code-container">
+            <div class="code" th:text="${pickupCode}">CODE-1234</div>
+        </div>
+
+        <div class="instructions">
+            <h3>Instrucțiuni pickup:</h3>
+            <ul>
+                <li>
+                    <span th:if="${plural}">
+                        Ridică-ți produsele (<strong th:text="${mugCount}"></strong>) de la punctul oficial
+                    </span>
+                    <span th:unless="${plural}">
+                        Ridică-ți produsul de la punctul oficial
+                    </span>
+                    <span style="color:#d41367;" th:text="'„' + ${orgName} + '”'"></span>.
+                </li>
+                <li>Program disponibil:</li>
+            </ul>
+
+            <div class="hours">
+                <p><strong>Luni-Vineri:</strong> 17:30-22:00</p>
+                <p><strong>Sâmbătă-Duminică:</strong> 15:30-22:00</p>
+            </div>
+
+            <ul>
+                <li>
+                    Prezintă codul unic la stand pentru ridicare.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

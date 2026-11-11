@@ -1,0 +1,61 @@
+# Editor directories and files
+.gemini/
+.agents/
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# OS Files
+*.lnk
+
+# Local Docker files
+.docker/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+env.txt
+*.env.txt
+service-account*.json
+*service-account*.json
+credentials.json
+neon_backup.sql
+*backup*.sql
+*.dump
+
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+
+# WhatsApp Session / Baileys Auth Info
+whatsapp-service/auth_info_baileys/
+auth_info_baileys/
+*.baileys*
+
+# JVM Crash logs & general logs
+*.log
+log.txt
+hs_err_pid*.log
+replay_pid*.log
+
+# Playwright Test Outputs
+test-results/
+playwright-report/
+blob-report/
+
+# Backups
+backups/
+*.sql.gz
+
+# Uploads directory
+uploads/
+backend/uploads/

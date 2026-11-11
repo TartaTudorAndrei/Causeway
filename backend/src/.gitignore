@@ -1,0 +1,14 @@
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+### Gradle ###
+.gradle/
+build/
+
+### Sensitive ###
+credentials.json
+gmail-credentials.json

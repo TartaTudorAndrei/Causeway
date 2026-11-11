@@ -1,0 +1,92 @@
+{
+  "identity": {
+    "id": "spc-brasov",
+    "name": "Speranță pentru Copii",
+    "shorthand": "SPC",
+    "tagline": "Dăruiește bucurie copiilor de sărbători",
+    "description": "Speranță pentru Copii Brașov - campanie de strângere de fonduri.",
+    "missionStatement": "Speranță pentru Copii unește comunitatea din Brașov pentru a asigura sprijin educațional și căldură copiilor din zone defavorizate."
+  },
+  "theme": {
+    "brandColors": {
+      "primary": "#1e3a8a",
+      "secondary": "#0f172a",
+      "accent": "#f59e0b",
+      "cream": "#f8fafc",
+      "creamDark": "#e2e8f0",
+      "red": "#dc2626",
+      "charcoal": "#0f172a"
+    },
+    "assets": {
+      "logoUrl": "/assets/spc-logo.png",
+      "logoLightUrl": "/assets/spc-logo-light.png",
+      "logoDarkUrl": "/assets/spc-logo-dark.png",
+      "faviconUrl": "/favicon.png",
+      "appleTouchIconUrl": "/icons/apple-touch-icon.png",
+      "pwaIcon192": "/icons/pwa-192x192.png",
+      "pwaIcon512": "/icons/pwa-512x512.png"
+    },
+    "styling": {
+      "patternStyle": "minimal",
+      "borderRadius": "rounded-2xl"
+    }
+  },
+  "location": {
+    "city": "Brașov",
+    "county": "Brașov",
+    "country": "România",
+    "timezone": "Europe/Bucharest",
+    "coordinates": {
+      "latitude": 45.6579,
+      "longitude": 25.6012
+    },
+    "weatherEnabled": true
+  },
+  "legal": {
+    "entityName": "Asociația „Speranță pentru Copii” (SPC)",
+    "taxId": "RO87654321",
+    "registrationNumber": "J08/9876/2021",
+    "headquartersAddress": "Brașov, jud. Brașov, România",
+    "iban": "RO99BBBB0000000000000000",
+    "bankName": "Banca Comercială Română",
+    "representativeName": "Elena Popescu",
+    "representativeRole": "Director Executiv"
+  },
+  "affiliations": {
+    "categoryLabel": "Filială",
+    "categories": ["Filiala Nord", "Filiala Sud", "Voluntari Independenți", "Altele"]
+  },
+  "terminology": {
+    "merchandiseItemSingular": "Pachet",
+    "merchandiseItemPlural": "Pachete",
+    "campaignSeasonName": "Campania Brașov 2026",
+    "standLabelSingular": "Punct",
+    "standLabelPlural": "Puncte"
+  },
+  "integrations": {
+    "pickupCodePrefix": "SPC-",
+    "stripeStatementDescriptor": "SPC CHARITY",
+    "stripeProductName": "SPC Donation",
+    "stripeDescription": "Charity donation to Speranta pentru Copii Brasov",
+    "totpIssuer": "SPC Charity",
+    "emailSenderName": "SPC Charity",
+    "emailSenderAddress": "contact@spcbrasov.ro",
+    "whatsAppClientName": "SPC Causeway App",
+    "googleDriveFolderName": "SPC Workspace",
+    "contactEmail": "contact@spcbrasov.ro",
+    "contactPhone": "+40 711 000 000",
+    "socialLinks": {
+      "facebook": "https://facebook.com/sperantapentrucopii",
+      "instagram": "https://instagram.com/sperantapentrucopii",
+      "linkedin": "",
+      "website": "https://spcbrasov.ro"
+    }
+  },
+  "features": {
+    "publicLandingPages": true,
+    "weatherForecasting": true,
+    "standVolunteerSignup": true,
+    "onlineDonations": true,
+    "emailStudio": true
+  }
+}

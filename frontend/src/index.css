@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Cinzel", serif;
+  
+
+  /* Dynamic Brand Color Tokens mapped to CSS Custom Properties */
+  --color-brand-primary: var(--brand-primary, #0b3323);
+  --color-brand-secondary: var(--brand-secondary, #59101c);
+  --color-brand-cream: var(--brand-cream, #f6efe2);
+  --color-brand-cream-dark: var(--brand-cream-dark, #ebdcb9);
+  --color-brand-accent: var(--brand-accent, #c3984e);
+  --color-brand-red: var(--brand-red, #a32222);
+  --color-brand-charcoal: var(--brand-charcoal, #1e1e1e);
+  --animate-fade-in: fade-in 0.6s ease-out forwards;
+  --animate-slide-up: slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  background-color: #faf7f2;
+  color: #2b2927;
+  font-family: var(--font-sans);
+}
+
+/* Custom Folk Art & Argyle Patterns */
+.bg-argyle-pattern {
+  background-color: var(--brand-secondary, #59101c);
+  background-image: 
+    linear-gradient(135deg, var(--brand-primary, #0b3323) 25%, transparent 25%), 
+    linear-gradient(225deg, var(--brand-primary, #0b3323) 25%, transparent 25%), 
+    linear-gradient(45deg, var(--brand-primary, #0b3323) 25%, transparent 25%), 
+    linear-gradient(315deg, var(--brand-primary, #0b3323) 25%, var(--brand-secondary, #59101c) 25%);
+  background-position: 40px 0, 40px 0, 0 0, 0 0;
+  background-size: 80px 80px;
+  background-repeat: repeat;
+}
+
+.bg-argyle-light {
+  background-color: var(--brand-cream, #f6efe2);
+  background-image: 
+    linear-gradient(135deg, var(--brand-cream-dark, #ebdcb9) 25%, transparent 25%), 
+    linear-gradient(225deg, var(--brand-cream-dark, #ebdcb9) 25%, transparent 25%), 
+    linear-gradient(45deg, var(--brand-cream-dark, #ebdcb9) 25%, transparent 25%), 
+    linear-gradient(315deg, var(--brand-cream-dark, #ebdcb9) 25%, var(--brand-cream, #f6efe2) 25%);
+  background-position: 20px 0, 20px 0, 0 0, 0 0;
+  background-size: 40px 40px;
+  background-repeat: repeat;
+  opacity: 0.8;
+}
+
+/* Custom Clean, Subtle & Non-Intrusive Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160, 160, 160, 0.15) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(160, 160, 160, 0.15);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 160, 160, 0.4);
+}
+
+/* Hide scrollbars on touch / mobile devices for clean feel */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+/* Utility to hide scrollbars completely */
+.no-scrollbar::-webkit-scrollbar,
+.no-scrollbar *::-webkit-scrollbar,
+html:has(.no-scrollbar)::-webkit-scrollbar,
+body:has(.no-scrollbar)::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.no-scrollbar,
+.no-scrollbar *,
+html:has(.no-scrollbar),
+body:has(.no-scrollbar) {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom Visible Scrollbar for Canvas & Editors */
+.custom-scrollbar {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(120, 120, 120, 0.45) transparent !important;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+  display: block !important;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(120, 120, 120, 0.4) !important;
+  border-radius: 9999px !important;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.7) !important;
+}
+
+
+
+/* Smooth Global Theme & Surface Transitions (zero specificity via :where so utility classes override effortlessly) */
+:where(
+  html, body, #root, header, footer, nav, main, aside, section, article, div, p, span, h1, h2, h3, h4, h5, h6,
+  ul, ol, li, table, thead, tbody, tr, th, td, form, input, textarea, select, button, svg, path
+) {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Hide native browser number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Fix Google Sign-In iframe white box / light canvas in dark mode */
+iframe[src*="accounts.google.com"],
+iframe[id^="gsi_"],
+iframe[title*="Google"] {
+  color-scheme: normal !important;
+  background-color: transparent !important;
+  border-radius: 9999px !important;
+  border: none !important;
+}
+
+div[id^="g_id_onload"],
+div:has(> iframe[src*="accounts.google.com"]),
+div:has(> iframe[id^="gsi_"]),
+div:has(> iframe[title*="Google"]) {
+  background-color: transparent !important;
+  border-radius: 9999px !important;
+  overflow: hidden !important;
+}
+
+/* Mobile Safe Area insets for full-screen modals (prevent phone header/notch clipping) */
+@media (max-width: 639px) {
+  [class*="fixed inset-0"] > div[class*="rounded-none"],
+  [class*="fixed inset-0"] > div[class*="h-full"],
+  [class*="fixed inset-0"] > div[class*="h-screen"],
+  [class*="fixed inset-0"] > div[class*="h-dvh"] {
+    padding-top: env(safe-area-inset-top, 0px) !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+  }
+}
+

@@ -1,0 +1,131 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: charity_dev_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PGUSER:-charity_dev_user}
+      POSTGRES_PASSWORD: ${PGPASSWORD:-charity_password}
+      POSTGRES_DB: ${PGDATABASE:-charity_dev_db}
+    ports:
+      - "${PGPORT_HOST:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PGUSER:-charity_dev_user} -d ${PGDATABASE:-charity_dev_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  whatsapp-service:
+    build:
+      context: ./whatsapp-service
+      dockerfile: Dockerfile
+    container_name: charity_dev_whatsapp
+    restart: unless-stopped
+    volumes:
+      - whatsapp_session_data:/app/auth_info_baileys
+    environment:
+      - PORT=3001
+      - WHATSAPP_INTERNAL_SECRET=${WHATSAPP_INTERNAL_SECRET:-app_internal_secret}
+      - BACKEND_URL=http://backend:8080
+      - AUTH_DIR=/app/auth_info_baileys
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: charity_dev_backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    environment:
+      - PGHOST=${DOCKER_PGHOST:-db}
+      - PGPORT=${PGPORT:-5432}
+      - PGDATABASE=${PGDATABASE:-charity_dev_db}
+      - PGUSER=${PGUSER:-charity_dev_user}
+      - PGPASSWORD=${PGPASSWORD:-charity_password}
+      - PGSSLMODE=${PGSSLMODE:-disable}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-sk_test_placeholder}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-whsec_placeholder}
+      - SPRING_MAIL_HOST=${SPRING_MAIL_HOST:-smtp.gmail.com}
+      - SPRING_MAIL_PORT=${SPRING_MAIL_PORT:-587}
+      - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME:-}
+      - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD:-}
+      - WHATSAPP_ENABLED=true
+      - WHATSAPP_SERVICE_URL=http://whatsapp-service:3001
+      - WHATSAPP_INTERNAL_SECRET=${WHATSAPP_INTERNAL_SECRET:-app_internal_secret}
+      - JWT_SECRET=${JWT_SECRET:-causeway_super_secret_jwt_signing_key_2026_at_least_32_bytes_long}
+      - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID:-}
+      - GOOGLE_CREDENTIALS_JSON=${GOOGLE_CREDENTIALS_JSON:-}
+      - GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN:-}
+      - GOOGLE_DRIVE_FOLDER_ID=${GOOGLE_DRIVE_FOLDER_ID:-}
+      - GMAIL_CREDENTIALS_JSON=${GMAIL_CREDENTIALS_JSON:-}
+      - GMAIL_REFRESH_TOKEN=${GMAIL_REFRESH_TOKEN:-}
+      - GOOGLE_APPS_SCRIPT_URL=${GOOGLE_APPS_SCRIPT_URL:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - APP_TENANT_ID=${APP_TENANT_ID:-causeway}
+      - APP_TENANT_NAME=${APP_TENANT_NAME:-Causeway}
+      - APP_TENANT_SHORTHAND=${APP_TENANT_SHORTHAND:-CAUSEWAY}
+      - APP_GOOGLE_SHEETS_PREFIX=${APP_GOOGLE_SHEETS_PREFIX:-Causeway}
+      - APP_GOOGLE_SHEETS_MASTER_TITLE=${APP_GOOGLE_SHEETS_MASTER_TITLE:-Causeway_Dashboard}
+      - APP_GOOGLE_DRIVE_FOLDER_NAME=${APP_GOOGLE_DRIVE_FOLDER_NAME:-Causeway Workspace}
+      - APP_PICKUP_CODE_PREFIX=${APP_PICKUP_CODE_PREFIX:-APP-}
+      - APP_EMAIL_SENDER_NAME=${APP_EMAIL_SENDER_NAME:-Causeway}
+      - APP_EMAIL_SENDER_ADDRESS=${APP_EMAIL_SENDER_ADDRESS:-contact@example.org}
+      - CHARITY_EMAIL_FROM=${CHARITY_EMAIL_FROM:-contact@example.org}
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
+      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL:-}
+      - RESEND_FROM_NAME=${RESEND_FROM_NAME:-}
+      - APP_TOTP_ISSUER=${APP_TOTP_ISSUER:-Causeway}
+      - APP_STRIPE_DESCRIPTOR=${APP_STRIPE_DESCRIPTOR:-CAUSEWAY DONATION}
+      - GOOGLE_SHEETS_SPREADSHEET_ID=${GOOGLE_SHEETS_SPREADSHEET_ID:-}
+      - APP_UI_CONFIG_ENABLED=${APP_UI_CONFIG_ENABLED:-false}
+    depends_on:
+      db:
+        condition: service_healthy
+      whatsapp-service:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID:-}
+        - VITE_GOOGLE_MAPS_API_KEY=${VITE_GOOGLE_MAPS_API_KEY:-}
+    container_name: charity_dev_frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-8000}:80"
+    environment:
+      - BACKEND_URL=http://backend:8080
+      - BACKEND_HOST=backend:8080
+    depends_on:
+      - backend
+
+  db-backup:
+    image: prodrigestivill/postgres-backup-local:16-alpine
+    container_name: charity_dev_db_backup
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backups:/backups
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_CLUSTER: 'TRUE'
+      POSTGRES_USER: ${PGUSER:-charity_dev_user}
+      POSTGRES_PASSWORD: ${PGPASSWORD:-charity_password}
+      POSTGRES_DB: ${PGDATABASE:-charity_dev_db}
+      SCHEDULE: "0 2 * * *"
+      BACKUP_ON_START: "TRUE"
+      BACKUP_KEEP_DAYS: 7
+      BACKUP_KEEP_WEEKS: 4
+      BACKUP_KEEP_MONTHS: 6
+      POSTGRES_EXTRA_OPTS: ''
+
+volumes:
+  postgres_data:
+  whatsapp_session_data:
